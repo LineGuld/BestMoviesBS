@@ -1,0 +1,50 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:32650",
+      "sslPort": 44309
+    }
+  },
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5141",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "uri": "neo4j+s://48bdf51d.databases.neo4j.io",
+        "username": "neo4j",
+        "password": "U71jtLcVtdOfc-bOzUTupv7x1emty2qGT06B6E-Ogxc"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7145;http://localhost:5141",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development", 
+        "uri": "neo4j+s://48bdf51d.databases.neo4j.io",
+        "username": "neo4j",
+        "password": "U71jtLcVtdOfc-bOzUTupv7x1emty2qGT06B6E-Ogxc"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "uri": "neo4j+s://48bdf51d.databases.neo4j.io",
+        "username": "neo4j",
+        "password": "U71jtLcVtdOfc-bOzUTupv7x1emty2qGT06B6E-Ogxc"
+      }
+    }
+  }
+}
