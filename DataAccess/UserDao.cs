@@ -5,7 +5,7 @@ namespace BestMoviesBS.DataAccess;
 public class UserDao : IUserDao
 {
         private string uri = Environment.GetEnvironmentVariable("uri");
-        private string user = Environment.GetEnvironmentVariable("username");
+        private string user = Environment.GetEnvironmentVariable("user");
         private string password = Environment.GetEnvironmentVariable("password");
         
         private User _user = new User();

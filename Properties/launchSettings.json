@@ -18,7 +18,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "uri": "neo4j+s://48bdf51d.databases.neo4j.io",
-        "username": "neo4j",
+        "user": "neo4j",
         "password": "U71jtLcVtdOfc-bOzUTupv7x1emty2qGT06B6E-Ogxc"
       }
     },
@@ -31,7 +31,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development", 
         "uri": "neo4j+s://48bdf51d.databases.neo4j.io",
-        "username": "neo4j",
+        "user": "neo4j",
         "password": "U71jtLcVtdOfc-bOzUTupv7x1emty2qGT06B6E-Ogxc"
       }
     },
@@ -42,7 +42,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "uri": "neo4j+s://48bdf51d.databases.neo4j.io",
-        "username": "neo4j",
+        "user": "neo4j",
         "password": "U71jtLcVtdOfc-bOzUTupv7x1emty2qGT06B6E-Ogxc"
       }
     }
