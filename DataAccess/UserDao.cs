@@ -95,6 +95,9 @@ namespace BestMoviesBS.DataAccess
 
         public async Task<Toplist> GetToplist(string userId)
         {
+            _toplist.TitleIds.Clear();
+            _toplist.Id = -1;
+            
             var query = $@"
             MATCH (u:User {{id: $id}})-->(t:Toplist)
             RETURN t.title1, t.title2, t.title3, t.title4, t.title5";
