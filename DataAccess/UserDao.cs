@@ -13,7 +13,7 @@ namespace BestMoviesBS.DataAccess
         private string password = Environment.GetEnvironmentVariable("password");
 
         private User _user = new User();
-        private Toplist _toplist = new Toplist();
+       // private Toplist _toplist = new Toplist();
         private bool _disposed = false;
         private readonly IDriver _driver;
 
@@ -95,8 +95,7 @@ namespace BestMoviesBS.DataAccess
 
         public async Task<Toplist> GetToplist(string userId)
         {
-            _toplist.TitleIds.Clear();
-            _toplist.Id = -1;
+             Toplist _toplist = new Toplist();
             
             var query = $@"
             MATCH (u:User {{id: $id}})-->(t:Toplist)
@@ -193,8 +192,8 @@ namespace BestMoviesBS.DataAccess
                     return await result.ToListAsync();
                 });
 
-                await GetToplist(userId);
-                Toplist userToplist = _toplist;
+                Toplist userToplist = 
+                    await GetToplist(userId);
 
                 // få users toplist
                 // skub film på pladserne toplistNumber-(toplist.count-1) én ned
