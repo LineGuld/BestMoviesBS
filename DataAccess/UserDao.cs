@@ -110,18 +110,18 @@ namespace BestMoviesBS.DataAccess
 
                 foreach (var result in readResults)
                 {
-                    _toplist.TitleIds.Insert(0, result["t.title1"].As<int>());
-                    _toplist.TitleIds.Insert(1, result["t.title2"].As<int>());
-                    _toplist.TitleIds.Insert(2, result["t.title3"].As<int>());
-                    _toplist.TitleIds.Insert(3, result["t.title4"].As<int>());
-                    _toplist.TitleIds.Insert(4, result["t.title5"].As<int>());
+                    _toplist.TitleIds.Insert(0, result["t.title1"].As<int?>());
+                    _toplist.TitleIds.Insert(1, result["t.title2"].As<int?>());
+                    _toplist.TitleIds.Insert(2, result["t.title3"].As<int?>());
+                    _toplist.TitleIds.Insert(3, result["t.title4"].As<int?>());
+                    _toplist.TitleIds.Insert(4, result["t.title5"].As<int?>());
 
                     for (int i = 0; i < _toplist.TitleIds.Count; i++)
                     {
                         Console.WriteLine("Title " + _toplist.TitleIds[i]);
                     }
                 }
-
+    
                 return _toplist;
             }
             // Capture any errors along with the query and data for traceability

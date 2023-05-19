@@ -22,12 +22,20 @@ namespace BestMoviesBS.Services
         {
             Toplist toplist = await UserDao.GetToplist(userId);
 
-            toplist.TitleIds.Insert(toplistNumber-1, tmdbId);
-            int excess = toplist.TitleIds.Count - 5;
-            toplist.TitleIds.RemoveRange(5, excess);
+            if (toplist.TitleIds[toplistNumber-1] == null)
+            {
+              toplist.TitleIds[toplistNumber-1] = tmdbId;  
+            }
+            else
+            {
+                toplist.TitleIds.Insert(toplistNumber-1, tmdbId);
+                int excess = toplist.TitleIds.Count - 5;
+                toplist.TitleIds.RemoveRange(5, excess);                
+            }
 
-          await UserDao.SetToplist(userId, toplist);
-          
+            await UserDao.SetToplist(userId, toplist);
+             
+          toplist.TitleIds.Clear();
           return await UserDao.GetToplist(userId);
         }
     }

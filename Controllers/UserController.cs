@@ -39,8 +39,8 @@ namespace BestMoviesBS.Controllers
             {
                 try
                 {
-                     Toplist toplist = await UserService.AddMovieToToplist(userid, tmdbId,toplistNumber);
-                    return Ok(toplist);
+                   // new Toplist  = await UserService.AddMovieToToplist(userid, tmdbId,toplistNumber);
+                    return Ok(await UserService.AddMovieToToplist(userid, tmdbId,toplistNumber));
                 }
                 catch (Exception e)
                 {
