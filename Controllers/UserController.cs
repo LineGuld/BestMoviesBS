@@ -32,6 +32,22 @@ namespace BestMoviesBS.Controllers
                     return StatusCode(500, e.Message);
                 }
             }
+
+            [HttpPatch]
+            [Route("toplist/{userid}")]
+            public async Task<ActionResult> AddMovieToToplist([FromRoute] string userid, [FromQuery] int tmdbId, [FromQuery] int toplistNumber)
+            {
+                try
+                {
+                   // new Toplist  = await UserService.AddMovieToToplist(userid, tmdbId,toplistNumber);
+                    return Ok(await UserService.AddMovieToToplist(userid, tmdbId,toplistNumber));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return StatusCode(500, e.Message);
+                }
+            }
     }
 }
 
