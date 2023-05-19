@@ -3,6 +3,6 @@
     public class Toplist
     {
         public int Id { get; set; }
-        public int[] TitleIds = new int[5];
+        public List<int> TitleIds = new List<int>();
     }
 }
