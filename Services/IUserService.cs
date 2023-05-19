@@ -1,8 +1,11 @@
-﻿using BestMoviesBS.Models;
+﻿using System.Threading.Tasks;
+using BestMoviesBS.Models;
 
-namespace BestMoviesBS.Services;
-
-public interface IUserService
+namespace BestMoviesBS.Services
 {
-    Task<Toplist> GetToplist(string? userId); 
+   public interface IUserService
+   {
+       Task<Toplist> GetToplist(string? userId); 
+   } 
 }
+

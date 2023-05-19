@@ -1,7 +1,8 @@
-﻿namespace BestMoviesBS.Models;
-
-public class Toplist
+﻿namespace BestMoviesBS.Models
 {
-    public int Id { get; set; }
-    public int[] TitleIds = new int[5];
+    public class Toplist
+    {
+        public int Id { get; set; }
+        public int[] TitleIds = new int[5];
+    }
 }

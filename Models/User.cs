@@ -1,7 +1,9 @@
-﻿namespace BestMoviesBS.Models;
-
-public class User
+﻿namespace BestMoviesBS.Models
 {
-    public string Id { get; set; }
-    public string Username { get; set; }
+    public class User
+    {
+        public string Id { get; set; }
+        public string Username { get; set; }
+    }
 }
+
