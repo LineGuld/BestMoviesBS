@@ -33,7 +33,7 @@ namespace BestMoviesBS.Controllers
                 }
             }
 
-            [HttpPatch]
+            [HttpPut]
             [Route("toplist/{userid}")]
             public async Task<ActionResult> AddMovieToToplist([FromRoute] string userid, [FromQuery] int tmdbId, [FromQuery] int toplistNumber)
             {
