@@ -1,4 +1,6 @@
-﻿namespace BestMoviesBS.Models
+﻿using System.Collections.Generic;
+
+namespace BestMoviesBS.Models
 {
     public class Toplist
     {
