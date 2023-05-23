@@ -7,6 +7,8 @@ namespace BestMoviesBS.DataAccess
     {
         Task<Toplist> GetToplist(string userId);
         Task SetToplist(string userId, Toplist toplist);
+        Task<User> NewUserCheck(string userId);
+        Task AddNewUser(string userId, string userName);
     }
 }
 
