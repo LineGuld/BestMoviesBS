@@ -2,6 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ActiveDebugProfile>https</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>C:\Users\LineK\Source\Repos\LineGuld\BestMoviesBS\.github\workflows\BestMoviesBS20230520130446.yml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\LineK\Source\Repos\LineGuld\BestMoviesBS\Properties\PublishProfiles\BestMoviesNeo4j - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
