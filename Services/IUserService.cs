@@ -8,6 +8,7 @@ namespace BestMoviesBS.Services
    {
        Task<Toplist> GetToplist(string? userId);
        Task<Toplist> AddMovieToToplist(string userId, int tmdbId, int toplistNumber);
+       Task<User> FindUser(string? userId);
    } 
 }
 

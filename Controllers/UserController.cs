@@ -18,6 +18,22 @@ namespace BestMoviesBS.Controllers
             }
     
             [HttpGet]
+            [Route("{userId}")]
+            public async Task<ActionResult> GetUser([FromRoute] string? userId)
+            {
+                try
+                {
+                    User user = await UserService.FindUser(userId);
+                    return Ok(user);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return StatusCode(500, e.Message);
+                }
+            }
+            
+            [HttpGet]
             [Route("toplist/{userId}")]
             public async Task<ActionResult> GetToplist([FromRoute] string? userId)
             {
