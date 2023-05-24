@@ -13,6 +13,12 @@ namespace BestMoviesBS.Services
             UserDao = userDao;
         }
     
+        public async Task<User> FindUser(string? userId)
+        {
+            return await UserDao.FindUser(userId);
+        }
+
+        
         public async Task<Toplist> GetToplist(string? userId)
         {
             return await UserDao.GetToplist(userId);
