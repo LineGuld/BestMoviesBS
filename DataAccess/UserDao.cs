@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -83,7 +84,7 @@ namespace BestMoviesBS.DataAccess
             return toplist;
         }
 
-        public async Task SetToplist(string userId, Toplist toplist)
+        /*public async Task SetToplist(string userId, Toplist toplist)
         {
             var query = $@"
             MATCH (u:User {{id: $id}})-->(t:Toplist)
@@ -116,64 +117,27 @@ namespace BestMoviesBS.DataAccess
                     Console.WriteLine("Titles " + _toplist.TitleIds);
                     Console.WriteLine(
                         $"Added movie {result["u.username"].As<String>()} to toplist no. {result["t.id"].As<Int32>()}");
-                }*/
+                }#1#
             }
             catch (Neo4jException ex)
             {
                 Console.WriteLine($"{query} - {ex}");
                 throw;
             }
-        }
+        }*/
 
-        public async Task AddMovieToToplist(string userId, int tmdbId, int toplistNumber)
+        public async Task<Toplist> AddMovieToToplist(string userId, int tmdbId)
         {
-            var query = $@"
-            MATCH (u:User {{id: $id}})-->(t:Toplist)
-            SET t.title{toplistNumber} = $tmdbid
-            RETURN t";
-
-            await using var session = _driver.AsyncSession(configBuilder => configBuilder.WithDatabase("neo4j"));
-            try
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                var writeResults = await session.ExecuteWriteAsync(async tx =>
-                {
-                    var result = await tx.RunAsync(query, new {tmdbid = tmdbId, id = userId});
-                    return await result.ToListAsync();
-                });
+                string query = @$"Insert into Toplist(userID, movieID) values ('{userId}', {tmdbId})";
 
-                Toplist userToplist =
-                    await GetToplist(userId);
+                SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
 
-                // få users toplist
-                // skub film på pladserne toplistNumber-(toplist.count-1) én ned
-                // film på index 4 gemmes ikke
-                // sæt tmdbId ind på index toplistNumber, som nu er tom
-
-                foreach (var result in writeResults)
-                {
-                    //string toplistNo = $"Title{toplistNumber}";
-
-
-                    // Console.WriteLine(toplist.titleIds[toplistNumber]);
-
-                    //  toplist.Id = result["t.id"].As<Int32>();
-                    // Console.WriteLine("Toplist " + _toplist.Id);
-
-
-                    //_toplist.titleIds[toplistNumber] = result[tmdbId].As<int>();
-                    //toplist.titles.SetValue(result[tmdbId].As<Int64>(), toplistNumber-1);
-
-                    // Console.WriteLine("Titles " + _toplist.titleIds);
-                    Console.WriteLine(
-                        $"Added movie {result["u.username"].As<String>()} to toplist no. {result["t.id"].As<Int32>()}");
-                }
+                DataSet toplists = new DataSet();
+                adapter.Fill(toplists, "Toplist");
             }
-            // Capture any errors along with the query and data for traceability
-            catch (Neo4jException ex)
-            {
-                Console.WriteLine($"{query} - {ex}");
-                throw;
-            }
+            return await GetToplist(userId);
         }
 
         public void Dispose()

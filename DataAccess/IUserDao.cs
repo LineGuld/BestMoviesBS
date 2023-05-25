@@ -6,7 +6,9 @@ namespace BestMoviesBS.DataAccess
     public interface IUserDao
     {
         Task<Toplist> GetToplist(string userId);
-        Task SetToplist(string userId, Toplist toplist);
+
+        Task<Toplist> AddMovieToToplist(string userId, int tmdbId);
+       // Task SetToplist(string userId, Toplist toplist);
         Task<User> FindUser(string userID);
     }
 }
