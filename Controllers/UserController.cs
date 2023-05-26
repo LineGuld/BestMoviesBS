@@ -33,6 +33,21 @@ namespace BestMoviesBS.Controllers
                 }
             }
             
+            [HttpPut]
+            [Route("")]
+            public async Task<ActionResult> AddUser([FromQuery] string userid, [FromQuery] string username)
+            {
+                try
+                {
+                    return Ok(await UserService.AddUser(userid,username));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return StatusCode(500, e.Message);
+                }
+            }
+            
             [HttpGet]
             [Route("{userId}/toplist")]
             public async Task<ActionResult> GetToplist([FromRoute] string? userId)

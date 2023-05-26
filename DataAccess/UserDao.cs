@@ -17,8 +17,7 @@ namespace BestMoviesBS.DataAccess
         private string password = Environment.GetEnvironmentVariable("password");
         private string connectionString = Environment.GetEnvironmentVariable("Connectionstring");
 
-        private User _user = new User();
-        private Toplist _toplist = new Toplist();
+     //   private User _user = new User();
         private bool _disposed = false;
         private readonly IDriver _driver;
 
@@ -63,35 +62,40 @@ namespace BestMoviesBS.DataAccess
                 Console.WriteLine($"{query} - {ex}");
                 throw;
             }
-            /*
-            //JsonSerializer serializer = new JsonSerializer();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = @$"SELECT ID, username
-                                        FROM [User] WHERE ID = '{userID}'";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    connection.Open();
-                    SqlDataReader reader = await command.ExecuteReaderAsync();
-                    if (reader.HasRows)
-                    {
-                       
-                        while (reader.Read())
-                        {
-                            user.Id = reader.GetString(0);
-                            user.Username = reader.GetString(1);
-                        }
-                    }
-                    reader.Close();
-                }
-            }*/
             return user;
+        }
+
+        public async Task<User> AddUser(User user)
+        {
+            var query = $@"
+            CREATE (u:User {{id: $id, username: $username}}) RETURN u";
+
+            await using var session = _driver.AsyncSession(configBuilder => configBuilder.WithDatabase("neo4j"));
+            try
+            {
+                var writeResults = await session.ExecuteWriteAsync(async tx =>
+                {
+                    var result = await tx.RunAsync(query, new
+                    {
+                        id = user.Id,
+                        username = user.Username
+                    });
+                    return await result.ToListAsync();
+                });
+
+                return await FindUser(user.Id);
+            }
+            catch (Neo4jException ex)
+            {
+                Console.WriteLine($"{query} - {ex}");
+                throw;
+            }
         }
 
         public async Task<Toplist> GetToplist(string userId)
         {
+         Toplist _toplist = new Toplist();
+        
             var query = $@"
             MATCH (u:User {{id: $id}})-->(t:Toplist)
             RETURN t.title1, t.title2, t.title3, t.title4, t.title5";
