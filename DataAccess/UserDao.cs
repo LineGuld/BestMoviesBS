@@ -12,6 +12,9 @@ namespace BestMoviesBS.DataAccess
 {
     public class UserDao : IUserDao
     {
+        private string uri = Environment.GetEnvironmentVariable("uri");
+        private string user = Environment.GetEnvironmentVariable("user");
+        private string password = Environment.GetEnvironmentVariable("password");
         private string connectionString = Environment.GetEnvironmentVariable("Connectionstring");
 
         private User _user = new User();
@@ -19,17 +22,48 @@ namespace BestMoviesBS.DataAccess
         private bool _disposed = false;
         private readonly IDriver _driver;
 
-        // ~UserDao() => Dispose(false);
+         ~UserDao() => Dispose(false);
 
         public UserDao()
         {
-            //  _driver = .Driver(uri, AuthTokens.Basic(user, password));
+            _driver = GraphDatabase.Driver(uri, AuthTokens.Basic(user, password));
         }
 
 
         public async Task<User> FindUser(string userID)
         {
             User user = new User();
+            
+            var query = @"
+            MATCH (u:User)
+            WHERE u.id = $id
+            RETURN u.username, u.id";
+
+            await using var session = _driver.AsyncSession(configBuilder => configBuilder.WithDatabase("neo4j"));
+            try
+            {
+                var readResults = await session.ExecuteReadAsync(async tx =>
+                {
+                    var result = await tx.RunAsync(query, new {id = userID});
+                    return await result.ToListAsync();
+                });
+
+                foreach (var result in readResults)
+                {
+                    user.Id = result["u.id"].As<String?>();
+                    user.Username = result["u.username"].As<String?>();
+                
+                    Console.WriteLine(
+                        $"Found user {result["u.username"].As<String>()} with id {result["u.id"].As<String>()}");
+                }
+            }
+            // Capture any errors along with the query and data for traceability
+            catch (Neo4jException ex)
+            {
+                Console.WriteLine($"{query} - {ex}");
+                throw;
+            }
+            /*
             //JsonSerializer serializer = new JsonSerializer();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -52,7 +86,7 @@ namespace BestMoviesBS.DataAccess
                     }
                     reader.Close();
                 }
-            }
+            }*/
             return user;
         }
 
@@ -73,11 +107,11 @@ namespace BestMoviesBS.DataAccess
 
                 foreach (var result in readResults)
                 {
-                    _toplist.TitleIds.Add(result["t.title1"].As<int>());
-                    _toplist.TitleIds.Add(result["t.title2"].As<int>());
-                    _toplist.TitleIds.Add(result["t.title3"].As<int>());
-                    _toplist.TitleIds.Add(result["t.title4"].As<int>());
-                    _toplist.TitleIds.Add(result["t.title5"].As<int>());
+                    _toplist.TitleIds.Add(result["t.title1"].As<int?>());
+                    _toplist.TitleIds.Add(result["t.title2"].As<int?>());
+                    _toplist.TitleIds.Add(result["t.title3"].As<int?>());
+                    _toplist.TitleIds.Add(result["t.title4"].As<int?>());
+                    _toplist.TitleIds.Add(result["t.title5"].As<int?>());
 
                     for (int i = 0; i < _toplist.TitleIds.Count; i++)
                     {
