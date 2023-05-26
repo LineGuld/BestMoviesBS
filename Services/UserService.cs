@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using BestMoviesBS.DataAccess;
 using BestMoviesBS.Models;
+using String = System.String;
 
 namespace BestMoviesBS.Services
 {
@@ -16,6 +17,18 @@ namespace BestMoviesBS.Services
         public async Task<User> FindUser(string? userId)
         {
             return await UserDao.FindUser(userId);
+        }
+
+        public async Task<User> AddUser(string userid, string username)
+        {
+            User user = await UserDao.FindUser(userid);
+            if (String.IsNullOrEmpty(user.Id) & String.IsNullOrEmpty(user.Username))
+            {
+                user.Id = userid;
+                user.Username = username;
+                return await UserDao.AddUser(user);
+            }
+            return user;
         }
 
 
