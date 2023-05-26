@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using BestMoviesBS.DataAccess;
 using BestMoviesBS.Models;
 using String = System.String;
@@ -28,46 +30,29 @@ namespace BestMoviesBS.Services
                 user.Username = username;
                 return await UserDao.AddUser(user);
             }
+
             return user;
         }
 
 
         public async Task<Toplist> GetToplist(string? userId)
         {
-            return await UserDao.GetToplist(userId);
+            Toplist toplist = await UserDao.GetToplist(userId);
+            toplist.trimToplist();
+            return toplist;
         }
 
         public async Task<Toplist> AddMovieToToplist(string userId, int tmdbId, int toplistNumber)
         {
             Toplist toplist = await UserDao.GetToplist(userId);
 
-            if (toplist.TitleIds[toplistNumber-1] == null)
-            {
-                toplist.TitleIds[toplistNumber-1] = tmdbId;  
-            }
-            else
-            {
-                toplist.TitleIds.Insert(toplistNumber-1, tmdbId);
-                int excess = toplist.TitleIds.Count - 5;
-                toplist.TitleIds.RemoveRange(5, excess);                
-            }
+            toplist.TitleIds.Insert(toplistNumber - 1, tmdbId);
+
+            toplist.trimToplist();
 
             await UserDao.SetToplist(userId, toplist);
-             
-            toplist.TitleIds.Clear();
+
             return await UserDao.GetToplist(userId);
         }
-        
-        /*public async Task<Toplist> AddMovieToToplist(string userId, int tmdbId)
-        {
-            if (tmdbId != null)
-            {
-                return await UserDao.AddMovieToToplist(userId, tmdbId);
-            }
-            else
-            {
-                return await UserDao.GetToplist(userId);;
-            }
-        }*/
     }
 }

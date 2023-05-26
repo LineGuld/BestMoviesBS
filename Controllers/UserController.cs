@@ -34,12 +34,12 @@ namespace BestMoviesBS.Controllers
             }
             
             [HttpPut]
-            [Route("{userId}")]
-            public async Task<ActionResult> AddUser([FromRoute] string userid, [FromQuery] string username)
+    
+            public async Task<ActionResult> AddUser([FromQuery] string userId, [FromQuery] string username)
             {
                 try
                 {
-                    return Ok(await UserService.AddUser(userid,username));
+                    return Ok(await UserService.AddUser(userId,username));
                 }
                 catch (Exception e)
                 {

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Data.SqlClient;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -17,7 +17,6 @@ namespace BestMoviesBS.DataAccess
         private string password = Environment.GetEnvironmentVariable("password");
         private string connectionString = Environment.GetEnvironmentVariable("Connectionstring");
 
-     //   private User _user = new User();
         private bool _disposed = false;
         private readonly IDriver _driver;
 
@@ -94,7 +93,7 @@ namespace BestMoviesBS.DataAccess
 
         public async Task<Toplist> GetToplist(string userId)
         {
-         Toplist _toplist = new Toplist();
+         Toplist _toplist = new Toplist(userId);
         
             var query = $@"
             MATCH (u:User {{id: $id}})-->(t:Toplist)
@@ -111,11 +110,11 @@ namespace BestMoviesBS.DataAccess
 
                 foreach (var result in readResults)
                 {
-                    _toplist.TitleIds.Add(result["t.title1"].As<int?>());
-                    _toplist.TitleIds.Add(result["t.title2"].As<int?>());
-                    _toplist.TitleIds.Add(result["t.title3"].As<int?>());
-                    _toplist.TitleIds.Add(result["t.title4"].As<int?>());
-                    _toplist.TitleIds.Add(result["t.title5"].As<int?>());
+                    _toplist.TitleIds.Insert(0,result["t.title1"].As<int?>());
+                    _toplist.TitleIds.Insert(1,result["t.title2"].As<int?>());
+                    _toplist.TitleIds.Insert(2,result["t.title3"].As<int?>());
+                    _toplist.TitleIds.Insert(3,result["t.title4"].As<int?>());
+                    _toplist.TitleIds.Insert(4,result["t.title5"].As<int?>());
 
                     for (int i = 0; i < _toplist.TitleIds.Count; i++)
                     {
@@ -135,6 +134,7 @@ namespace BestMoviesBS.DataAccess
 
         public async Task SetToplist(string userId, Toplist toplist)
         {
+            
             var query = $@"
             MATCH (u:User {{id: $id}})-->(t:Toplist)
             SET t.title1 = $tmdbid1
@@ -160,65 +160,7 @@ namespace BestMoviesBS.DataAccess
                     });
                     return await result.ToListAsync();
                 });
-
-                /*foreach (var result in writeResults)
-                {
-                    Console.WriteLine("Titles " + _toplist.TitleIds);
-                    Console.WriteLine(
-                        $"Added movie {result["u.username"].As<String>()} to toplist no. {result["t.id"].As<Int32>()}");
-                }*/
             }
-            catch (Neo4jException ex)
-            {
-                Console.WriteLine($"{query} - {ex}");
-                throw;
-            }
-        }
-
-        public async Task AddMovieToToplist(string userId, int tmdbId, int toplistNumber)
-        {
-            var query = $@"
-            MATCH (u:User {{id: $id}})-->(t:Toplist)
-            SET t.title{toplistNumber} = $tmdbid
-            RETURN t";
-
-            await using var session = _driver.AsyncSession(configBuilder => configBuilder.WithDatabase("neo4j"));
-            try
-            {
-                var writeResults = await session.ExecuteWriteAsync(async tx =>
-                {
-                    var result = await tx.RunAsync(query, new {tmdbid = tmdbId, id = userId});
-                    return await result.ToListAsync();
-                });
-
-                Toplist userToplist =
-                    await GetToplist(userId);
-
-                // få users toplist
-                // skub film på pladserne toplistNumber-(toplist.count-1) én ned
-                // film på index 4 gemmes ikke
-                // sæt tmdbId ind på index toplistNumber, som nu er tom
-
-                foreach (var result in writeResults)
-                {
-                    //string toplistNo = $"Title{toplistNumber}";
-
-
-                    // Console.WriteLine(toplist.titleIds[toplistNumber]);
-
-                    //  toplist.Id = result["t.id"].As<Int32>();
-                    // Console.WriteLine("Toplist " + _toplist.Id);
-
-
-                    //_toplist.titleIds[toplistNumber] = result[tmdbId].As<int>();
-                    //toplist.titles.SetValue(result[tmdbId].As<Int64>(), toplistNumber-1);
-
-                    // Console.WriteLine("Titles " + _toplist.titleIds);
-                    Console.WriteLine(
-                        $"Added movie {result["u.username"].As<String>()} to toplist no. {result["t.id"].As<Int32>()}");
-                }
-            }
-            // Capture any errors along with the query and data for traceability
             catch (Neo4jException ex)
             {
                 Console.WriteLine($"{query} - {ex}");
