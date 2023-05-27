@@ -10,11 +10,11 @@ namespace BestMoviesBS.Controllers
         [Route("/user")]
         public class UserController : ControllerBase
         {
-            private IUserService UserService;
+            private IUserService _userService;
         
             public UserController(IUserService userService)
             {
-                this.UserService = userService;
+                this._userService = userService;
             }
     
             [HttpGet]
@@ -23,7 +23,7 @@ namespace BestMoviesBS.Controllers
             {
                 try
                 {
-                    User user = await UserService.FindUser(userId);
+                    User user = await _userService.FindUser(userId);
                     return Ok(user);
                 }
                 catch (Exception e)
@@ -39,7 +39,7 @@ namespace BestMoviesBS.Controllers
             {
                 try
                 {
-                    return Ok(await UserService.AddUser(userId,username));
+                    return Ok(await _userService.AddUser(userId,username));
                 }
                 catch (Exception e)
                 {
@@ -54,7 +54,7 @@ namespace BestMoviesBS.Controllers
             {
                 try
                 {
-                    Toplist toplist = await UserService.GetToplist(userId);
+                    Toplist toplist = await _userService.GetToplist(userId);
                     return Ok(toplist);
                 }
                 catch (Exception e)
@@ -71,7 +71,7 @@ namespace BestMoviesBS.Controllers
                 try
                 {
                    // new Toplist  = await UserService.AddMovieToToplist(userid, tmdbId,toplistNumber);
-                    return Ok(await UserService.AddMovieToToplist(userid, tmdbId, number));
+                    return Ok(await _userService.AddMovieToToplist(userid, tmdbId, number));
                 }
                 catch (Exception e)
                 {

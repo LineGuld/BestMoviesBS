@@ -18,7 +18,9 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddSingleton<IUserDao, UserDao>();
+builder.Services.AddSingleton<IMovieDao, MovieDao>();
 
 var logger = LoggerFactory.Create(config =>
 {

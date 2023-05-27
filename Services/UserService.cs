@@ -9,26 +9,26 @@ namespace BestMoviesBS.Services
 {
     public class UserService : IUserService
     {
-        private IUserDao UserDao;
+        private IUserDao _userDao;
 
         public UserService(IUserDao userDao)
         {
-            UserDao = userDao;
+            _userDao = userDao;
         }
 
         public async Task<User> FindUser(string? userId)
         {
-            return await UserDao.FindUser(userId);
+            return await _userDao.FindUser(userId);
         }
 
         public async Task<User> AddUser(string userid, string username)
         {
-            User user = await UserDao.FindUser(userid);
+            User user = await _userDao.FindUser(userid);
             if (String.IsNullOrEmpty(user.Id) & String.IsNullOrEmpty(user.Username))
             {
                 user.Id = userid;
                 user.Username = username;
-                return await UserDao.AddUser(user);
+                return await _userDao.AddUser(user);
             }
 
             return user;
@@ -37,22 +37,22 @@ namespace BestMoviesBS.Services
 
         public async Task<Toplist> GetToplist(string? userId)
         {
-            Toplist toplist = await UserDao.GetToplist(userId);
+            Toplist toplist = await _userDao.GetToplist(userId);
             toplist.trimToplist();
             return toplist;
         }
 
         public async Task<Toplist> AddMovieToToplist(string userId, int tmdbId, int toplistNumber)
         {
-            Toplist toplist = await UserDao.GetToplist(userId);
+            Toplist toplist = await _userDao.GetToplist(userId);
 
             toplist.TitleIds.Insert(toplistNumber - 1, tmdbId);
 
             toplist.trimToplist();
 
-            await UserDao.SetToplist(userId, toplist);
+            await _userDao.SetToplist(userId, toplist);
 
-            return await UserDao.GetToplist(userId);
+            return await _userDao.GetToplist(userId);
         }
     }
 }
