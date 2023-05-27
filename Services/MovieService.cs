@@ -20,6 +20,18 @@ public class MovieService: IMovieService
 
     public async Task<Movie> PutMovie(Movie movie)
     {
-        return await _movieDao.PutMovie(movie);
+        Movie exists = await _movieDao.GetMovie(movie.Tmdbid);
+        if (exists.Tmdbid == null)
+        {
+            return await _movieDao.PutMovie(movie);
+        }
+        else if (String.IsNullOrEmpty(exists.Title) == true && String.IsNullOrEmpty(movie.Title)==false)
+        {
+            return await _movieDao.SetTitle(movie);
+        }
+        else
+        {
+            return exists;
+        }
     }
 }

@@ -53,9 +53,72 @@ namespace BestMoviesBS.DataAccess
             return movie;
         }
 
-        public Task<Movie> PutMovie(Movie movie)
+        public async Task<Movie> PutMovie(Movie movie)
         {
-            throw new NotImplementedException();
+            var query = $@"
+            CREATE (m :Movie {{tmdbid: $id, title: $title}}) 
+            RETURN m.tmdbid, m.title";
+            await using var session = _driver.AsyncSession(configBuilder => configBuilder.WithDatabase("neo4j"));
+            try
+            {
+                var writeResults = await session.ExecuteWriteAsync(async tx =>
+                {
+                    var result = await tx.RunAsync(query, new
+                    {
+                        id = movie.Tmdbid,
+                        title = movie.Title
+                    });
+                    return await result.ToListAsync();
+                });
+                
+                foreach (var result in writeResults)
+                {
+                    movie.Tmdbid = result["m.tmdbid"].As<int>();
+                    movie.Title = result["m.title"].As<String?>();
+                }
+                
+                return movie;
+            }
+            catch (Neo4jException ex)
+            {
+                Console.WriteLine($"{query} - {ex}");
+                throw;
+            }
+        }
+
+        public async Task<Movie> SetTitle(Movie movie)
+        {
+            var query = $@"
+            MATCH (m :Movie {{tmdbid: $id}}) 
+            SET m.title = $title
+            RETURN m.tmdbid, m.title";
+            
+            await using var session = _driver.AsyncSession(configBuilder => configBuilder.WithDatabase("neo4j"));
+            try
+            {
+                var writeResults = await session.ExecuteWriteAsync(async tx =>
+                {
+                    var result = await tx.RunAsync(query, new
+                    {
+                        id = movie.Tmdbid,
+                        title = movie.Title
+                    });
+                    return await result.ToListAsync();
+                });
+                
+                foreach (var result in writeResults)
+                {
+                    movie.Tmdbid = result["m.tmdbid"].As<int>();
+                    movie.Title = result["m.title"].As<String?>();
+                }
+                
+                return movie;
+            }
+            catch (Neo4jException ex)
+            {
+                Console.WriteLine($"{query} - {ex}");
+                throw;
+            }
         }
 
 
