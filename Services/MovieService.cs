@@ -25,7 +25,7 @@ public class MovieService: IMovieService
         {
             return await _movieDao.PutMovie(movie);
         }
-        else if (String.IsNullOrEmpty(exists.Title) == true && String.IsNullOrEmpty(movie.Title)==false)
+        else if (String.IsNullOrEmpty(exists.Title) && String.IsNullOrEmpty(movie.Title)==false)
         {
             return await _movieDao.SetTitle(movie);
         }
