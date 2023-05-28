@@ -1,12 +1,7 @@
-﻿﻿using System;
-using System.Data.SqlClient;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using System;
 using System.Threading.Tasks;
-using BestMoviesBS.DataAccess;
 using BestMoviesBS.Models;
 using Neo4j.Driver;
-using Newtonsoft.Json;
 
 namespace BestMoviesBS.DataAccess
 {

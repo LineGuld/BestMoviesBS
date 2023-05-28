@@ -1,10 +1,13 @@
-﻿using BestMoviesBS.Models;
+﻿using System.Threading.Tasks;
+using BestMoviesBS.Models;
 
-namespace BestMoviesBS.DataAccess;
-
-public interface IMovieDao
+namespace BestMoviesBS.DataAccess
 {
-    public Task<Movie> GetMovie(int? tmbdid);
-    public Task<Movie> PutMovie(Movie movie);
-    Task<Movie> SetTitle(Movie movie);
+    public interface IMovieDao
+    {
+        public Task<Movie> GetMovie(int? tmbdid);
+        public Task<Movie> PutMovie(Movie movie);
+        Task<Movie> SetTitle(Movie movie);
+    } 
 }
+
