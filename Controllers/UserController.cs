@@ -33,8 +33,22 @@ namespace BestMoviesBS.Controllers
                 }
             }
             
+            [HttpDelete]
+            [Route("{userId}")]
+            public async Task<ActionResult> DeleteUser([FromRoute] string? userId)
+            {
+                try
+                {
+                    return Ok(await UserService.DeleteUser(userId));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return StatusCode(500, e.Message);
+                }
+            }
+            
             [HttpPut]
-    
             public async Task<ActionResult> AddUser([FromQuery] string userId, [FromQuery] string username)
             {
                 try
