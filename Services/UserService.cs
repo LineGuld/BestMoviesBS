@@ -32,6 +32,11 @@ namespace BestMoviesBS.Services
             return user;
         }
 
+        public async Task<DeleteResult> DeleteUser(string? userId)
+        {
+            return await UserDao.DeleteUser(userId);
+        }
+
 
         public async Task<Toplist> GetToplist(string? userId)
         {

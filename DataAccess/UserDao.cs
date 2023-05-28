@@ -86,6 +86,33 @@ namespace BestMoviesBS.DataAccess
             }
         }
 
+        public async Task<DeleteResult> DeleteUser(string? userId)
+        {
+            var query = $@"MATCH (u :User {{id: $id}}) 
+                        OPTIONAL MATCH (u)-[r:Has]->(t :Toplist)
+                        DETACH DELETE u, t";
+            
+            await using var session = _driver.AsyncSession(configBuilder => configBuilder.WithDatabase("neo4j"));
+            try
+            {
+                var writeResults = await session.ExecuteWriteAsync(async tx =>
+                {
+                    var result = await tx.RunAsync(query, new
+                    {
+                        id = userId,
+                    });
+                    return await result.ConsumeAsync();
+                });
+
+                return new DeleteResult(writeResults.Counters.NodesDeleted, writeResults.Counters.RelationshipsDeleted);
+            }
+            catch (Neo4jException ex)
+            {
+                Console.WriteLine($"{query} - {ex}");
+                throw;
+            }
+        }
+        
         public async Task<Toplist> GetToplist(string userId)
         {
          Toplist _toplist = new Toplist(userId);

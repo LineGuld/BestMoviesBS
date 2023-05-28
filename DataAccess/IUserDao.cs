@@ -9,6 +9,7 @@ namespace BestMoviesBS.DataAccess
         Task SetToplist(string userId, Toplist toplist);
         Task<User> FindUser(string userID);
         Task<User> AddUser(User user);
+        Task<DeleteResult> DeleteUser(string? userId);
     }
 }
 
