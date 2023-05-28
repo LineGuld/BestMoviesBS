@@ -66,12 +66,12 @@ namespace BestMoviesBS.Controllers
 
             [HttpPut]
             [Route("{userId}/toplist")]
-            public async Task<ActionResult> AddMovieToToplist([FromRoute] string userid, [FromQuery] int tmdbId, [FromQuery] int number)
+            public async Task<ActionResult> AddMovieToToplist([FromRoute] string userId, [FromQuery] int tmdbId, [FromQuery] int number)
             {
                 try
                 {
                    // new Toplist  = await UserService.AddMovieToToplist(userid, tmdbId,toplistNumber);
-                    return Ok(await _userService.AddMovieToToplist(userid, tmdbId, number));
+                    return Ok(await _userService.AddMovieToToplist(userId, tmdbId, number));
                 }
                 catch (Exception e)
                 {

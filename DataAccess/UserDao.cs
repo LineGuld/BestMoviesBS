@@ -67,7 +67,7 @@ namespace BestMoviesBS.DataAccess
         public async Task<User> AddUser(User user)
         {
             var query = $@"
-            CREATE (u:User {{id: $id, username: $username}}) RETURN u";
+            CREATE (u:User {{id: $id, username: $username}})-[:Has]->(t :Toplist) RETURN u, t";
 
             await using var session = _driver.AsyncSession(configBuilder => configBuilder.WithDatabase("neo4j"));
             try

@@ -52,7 +52,9 @@ namespace BestMoviesBS.Services
 
             await _userDao.SetToplist(userId, toplist);
 
-            return await _userDao.GetToplist(userId);
+            toplist = await _userDao.GetToplist(userId);
+            toplist.trimToplist();
+            return toplist;
         }
     }
 }
