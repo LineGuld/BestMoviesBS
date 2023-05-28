@@ -39,7 +39,7 @@ namespace BestMoviesBS.Controllers
             {
                 try
                 {
-                    return Ok(await UserService.DeleteUser(userId));
+                    return Ok(await _userService.DeleteUser(userId));
                 }
                 catch (Exception e)
                 {
