@@ -1,9 +1,11 @@
-﻿using BestMoviesBS.Models;
+﻿using System.Threading.Tasks;
+using BestMoviesBS.Models;
 
-namespace BestMoviesBS.Services;
-
-public interface IMovieService
+namespace BestMoviesBS.Services
 {
-    public Task<Movie> GetMovie(int? tmbdid);
-    public Task<Movie> PutMovie(Movie movie);
+    public interface IMovieService
+    {
+        public Task<Movie> GetMovie(int? tmbdid);
+        public Task<Movie> PutMovie(Movie movie);
+    }
 }

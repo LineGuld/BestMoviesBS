@@ -1,4 +1,6 @@
-﻿using BestMoviesBS.Models;
+﻿using System;
+using System.Threading.Tasks;
+using BestMoviesBS.Models;
 using Neo4j.Driver;
 
 namespace BestMoviesBS.DataAccess

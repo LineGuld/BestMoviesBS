@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BestMoviesBS.DataAccess;
 using BestMoviesBS.Models;
 using String = System.String;

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using BestMoviesBS.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BestMoviesBS.Services
 {

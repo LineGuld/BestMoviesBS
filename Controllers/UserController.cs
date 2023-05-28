@@ -14,7 +14,7 @@ namespace BestMoviesBS.Controllers
         
             public UserController(IUserService userService)
             {
-                this._userService = userService;
+                _userService = userService;
             }
     
             [HttpGet]
@@ -70,7 +70,6 @@ namespace BestMoviesBS.Controllers
             {
                 try
                 {
-                   // new Toplist  = await UserService.AddMovieToToplist(userid, tmdbId,toplistNumber);
                     return Ok(await _userService.AddMovieToToplist(userId, tmdbId, number));
                 }
                 catch (Exception e)
